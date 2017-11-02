@@ -28,9 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NotifyF));
             this.acceptB = new System.Windows.Forms.Button();
             this.notificationL = new System.Windows.Forms.Label();
+            this.menuCMS = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyContentTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuCMS.SuspendLayout();
             this.SuspendLayout();
             // 
             // acceptB
@@ -46,6 +50,7 @@
             // notificationL
             // 
             this.notificationL.AutoSize = true;
+            this.notificationL.ContextMenuStrip = this.menuCMS;
             this.notificationL.Location = new System.Drawing.Point(13, 13);
             this.notificationL.MaximumSize = new System.Drawing.Size(470, 200);
             this.notificationL.Name = "notificationL";
@@ -53,20 +58,37 @@
             this.notificationL.TabIndex = 1;
             this.notificationL.Text = "Notificación";
             // 
+            // menuCMS
+            // 
+            this.menuCMS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyContentTSMI});
+            this.menuCMS.Name = "menuCMS";
+            this.menuCMS.Size = new System.Drawing.Size(167, 48);
+            // 
+            // copyContentTSMI
+            // 
+            this.copyContentTSMI.Name = "copyContentTSMI";
+            this.copyContentTSMI.Size = new System.Drawing.Size(166, 22);
+            this.copyContentTSMI.Text = "Copiar contenido";
+            this.copyContentTSMI.Click += new System.EventHandler(this.copyContentTSMI_Click);
+            // 
             // NotifyF
             // 
             this.AcceptButton = this.acceptB;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 261);
+            this.ContextMenuStrip = this.menuCMS;
+            this.ControlBox = false;
             this.Controls.Add(this.notificationL);
             this.Controls.Add(this.acceptB);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
             this.Name = "NotifyF";
             this.Text = "Notificación";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.NotifyF_Load);
+            this.menuCMS.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -76,5 +98,7 @@
 
         private System.Windows.Forms.Button acceptB;
         private System.Windows.Forms.Label notificationL;
+        private System.Windows.Forms.ContextMenuStrip menuCMS;
+        private System.Windows.Forms.ToolStripMenuItem copyContentTSMI;
     }
 }

@@ -11,20 +11,21 @@ namespace Recuerda.me
 {
     public partial class NotifyF : Form
     {
-        public NotifyF(string text, string title)
-        {
+        public NotifyF(string title, string text) {
             InitializeComponent();
             this.Text = title;
             notificationL.Text = text;
         }
-        private void NotifyF_Load(object sender, EventArgs e)
-        {
+        private void NotifyF_Load(object sender, EventArgs e) {
             this.Activate();
         }
 
-        private void acceptB_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
+        private void acceptB_Click(object sender, EventArgs e) {
+            this.Close();
+        }
+
+        private void copyContentTSMI_Click(object sender, EventArgs e) {
+            Clipboard.SetText(notificationL.Text);
         }
     }
 }

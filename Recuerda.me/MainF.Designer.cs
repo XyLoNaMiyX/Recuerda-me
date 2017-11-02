@@ -29,212 +29,277 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainF));
-            this.remindTimingTB = new System.Windows.Forms.TextBox();
-            this.remindTimingCB = new System.Windows.Forms.ComboBox();
             this.reminderTitleTB = new System.Windows.Forms.TextBox();
-            this.reminderTextTB = new System.Windows.Forms.TextBox();
+            this.reminderContentTB = new System.Windows.Forms.TextBox();
             this.reminderL = new System.Windows.Forms.Label();
-            this.remindTimingRB = new System.Windows.Forms.RadioButton();
-            this.remindTimeRB = new System.Windows.Forms.RadioButton();
-            this.remindTimeTB = new System.Windows.Forms.TextBox();
-            this.reminderT = new System.Windows.Forms.Timer(this.components);
             this.remindB = new System.Windows.Forms.Button();
-            this.lonamiwebsLL = new System.Windows.Forms.LinkLabel();
-            this.tipTT = new System.Windows.Forms.ToolTip(this.components);
-            this.reminderNI = new System.Windows.Forms.NotifyIcon(this.components);
-            this.remindmeNI = new System.Windows.Forms.NotifyIcon(this.components);
-            this.checkUpdatesB = new System.Windows.Forms.Button();
+            this.menuMS = new System.Windows.Forms.MenuStrip();
+            this.remindMeTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.myRemindersTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.startWithWinTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.minimizeToTrayTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkUpdatesTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.supportTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.remindMeAtDTP = new System.Windows.Forms.DateTimePicker();
+            this.remindMeAtL = new System.Windows.Forms.Label();
+            this.reminderContentL = new System.Windows.Forms.Label();
+            this.trayNI = new System.Windows.Forms.NotifyIcon(this.components);
+            this.trayCMS = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openRemindMeTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewMyRemindersTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.tss1 = new System.Windows.Forms.ToolStripSeparator();
+            this.exitTSMI = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusSS = new System.Windows.Forms.StatusStrip();
+            this.infoTSSL = new System.Windows.Forms.ToolStripStatusLabel();
+            this.menuMS.SuspendLayout();
+            this.trayCMS.SuspendLayout();
+            this.statusSS.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // remindTimingTB
-            // 
-            this.remindTimingTB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.remindTimingTB.Location = new System.Drawing.Point(119, 12);
-            this.remindTimingTB.MaxLength = 10;
-            this.remindTimingTB.Name = "remindTimingTB";
-            this.remindTimingTB.Size = new System.Drawing.Size(53, 20);
-            this.remindTimingTB.TabIndex = 0;
-            this.tipTT.SetToolTip(this.remindTimingTB, "Introduzca un número que indique el\r\ntiempo en el que desee que se le recuerde.\r\n" +
-        "Por ejemplo, 5");
-            this.remindTimingTB.TextChanged += new System.EventHandler(this.remindTimingTB_TextChanged);
-            // 
-            // remindTimingCB
-            // 
-            this.remindTimingCB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.remindTimingCB.AutoCompleteCustomSource.AddRange(new string[] {
-            "hora(s)",
-            "minuto(s)",
-            "segundo(s)"});
-            this.remindTimingCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.remindTimingCB.FormattingEnabled = true;
-            this.remindTimingCB.Items.AddRange(new object[] {
-            "segundo(s)",
-            "minuto(s)",
-            "hora(s)"});
-            this.remindTimingCB.Location = new System.Drawing.Point(178, 11);
-            this.remindTimingCB.Name = "remindTimingCB";
-            this.remindTimingCB.Size = new System.Drawing.Size(67, 21);
-            this.remindTimingCB.TabIndex = 2;
-            this.tipTT.SetToolTip(this.remindTimingCB, "Seleccione en que se va a medir el tiempo\r\nen el que debe esperar para que le rec" +
-        "uerde");
             // 
             // reminderTitleTB
             // 
             this.reminderTitleTB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.reminderTitleTB.Location = new System.Drawing.Point(12, 92);
+            this.reminderTitleTB.Location = new System.Drawing.Point(89, 34);
             this.reminderTitleTB.Name = "reminderTitleTB";
-            this.reminderTitleTB.Size = new System.Drawing.Size(233, 20);
+            this.reminderTitleTB.Size = new System.Drawing.Size(295, 20);
             this.reminderTitleTB.TabIndex = 3;
-            this.tipTT.SetToolTip(this.reminderTitleTB, "Título del recordatorio. Puede estar vacío.");
+            this.reminderTitleTB.TextChanged += new System.EventHandler(this.ResetInfo);
+            this.reminderTitleTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.reminderTitleTB_KeyDown);
             // 
-            // reminderTextTB
+            // reminderContentTB
             // 
-            this.reminderTextTB.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.reminderContentTB.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.reminderTextTB.Location = new System.Drawing.Point(12, 118);
-            this.reminderTextTB.Multiline = true;
-            this.reminderTextTB.Name = "reminderTextTB";
-            this.reminderTextTB.Size = new System.Drawing.Size(233, 75);
-            this.reminderTextTB.TabIndex = 4;
-            this.tipTT.SetToolTip(this.reminderTextTB, "Contenido del recordatorio. Puede estar vacío.");
+            this.reminderContentTB.Location = new System.Drawing.Point(89, 60);
+            this.reminderContentTB.Multiline = true;
+            this.reminderContentTB.Name = "reminderContentTB";
+            this.reminderContentTB.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.reminderContentTB.Size = new System.Drawing.Size(483, 35);
+            this.reminderContentTB.TabIndex = 4;
+            this.reminderContentTB.TextChanged += new System.EventHandler(this.ResetInfo);
             // 
             // reminderL
             // 
             this.reminderL.AutoSize = true;
-            this.reminderL.Location = new System.Drawing.Point(12, 76);
+            this.reminderL.Location = new System.Drawing.Point(12, 37);
             this.reminderL.Name = "reminderL";
             this.reminderL.Size = new System.Drawing.Size(71, 13);
             this.reminderL.TabIndex = 5;
             this.reminderL.Text = "Recordatorio:";
             // 
-            // remindTimingRB
-            // 
-            this.remindTimingRB.AutoSize = true;
-            this.remindTimingRB.Checked = true;
-            this.remindTimingRB.Location = new System.Drawing.Point(12, 12);
-            this.remindTimingRB.Name = "remindTimingRB";
-            this.remindTimingRB.Size = new System.Drawing.Size(101, 17);
-            this.remindTimingRB.TabIndex = 6;
-            this.remindTimingRB.TabStop = true;
-            this.remindTimingRB.Text = "Recuérdame en";
-            this.remindTimingRB.UseVisualStyleBackColor = true;
-            this.remindTimingRB.CheckedChanged += new System.EventHandler(this.remindTimingRB_CheckedChanged);
-            // 
-            // remindTimeRB
-            // 
-            this.remindTimeRB.AutoSize = true;
-            this.remindTimeRB.Location = new System.Drawing.Point(12, 38);
-            this.remindTimeRB.Name = "remindTimeRB";
-            this.remindTimeRB.Size = new System.Drawing.Size(111, 17);
-            this.remindTimeRB.TabIndex = 7;
-            this.remindTimeRB.Text = "Recuérdame a las";
-            this.remindTimeRB.UseVisualStyleBackColor = true;
-            // 
-            // remindTimeTB
-            // 
-            this.remindTimeTB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.remindTimeTB.Enabled = false;
-            this.remindTimeTB.Location = new System.Drawing.Point(129, 37);
-            this.remindTimeTB.MaxLength = 8;
-            this.remindTimeTB.Name = "remindTimeTB";
-            this.remindTimeTB.Size = new System.Drawing.Size(116, 20);
-            this.remindTimeTB.TabIndex = 8;
-            this.tipTT.SetToolTip(this.remindTimeTB, "Introduzca un formato de hora válido\r\nen el cual desee que se le recuerde.\r\nUtili" +
-        "ze los dos puntos, como ejemplos:\r\n18:02:30\r\n13:05");
-            this.remindTimeTB.TextChanged += new System.EventHandler(this.remindTimeTB_TextChanged);
-            // 
-            // reminderT
-            // 
-            this.reminderT.Interval = 500;
-            this.reminderT.Tick += new System.EventHandler(this.reminderT_Tick);
-            // 
             // remindB
             // 
-            this.remindB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.remindB.Location = new System.Drawing.Point(146, 199);
+            this.remindB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.remindB.Location = new System.Drawing.Point(12, 101);
             this.remindB.Name = "remindB";
-            this.remindB.Size = new System.Drawing.Size(96, 23);
+            this.remindB.Size = new System.Drawing.Size(560, 35);
             this.remindB.TabIndex = 9;
             this.remindB.Text = "¡Recuérdamelo!";
             this.remindB.UseVisualStyleBackColor = true;
             this.remindB.Click += new System.EventHandler(this.remindB_Click);
             // 
-            // lonamiwebsLL
+            // menuMS
             // 
-            this.lonamiwebsLL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lonamiwebsLL.AutoSize = true;
-            this.lonamiwebsLL.Location = new System.Drawing.Point(12, 204);
-            this.lonamiwebsLL.Name = "lonamiwebsLL";
-            this.lonamiwebsLL.Size = new System.Drawing.Size(86, 13);
-            this.lonamiwebsLL.TabIndex = 10;
-            this.lonamiwebsLL.TabStop = true;
-            this.lonamiwebsLL.Text = "lonamiwebs.github.io";
-            this.lonamiwebsLL.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lonamiwebsLL_LinkClicked);
+            this.menuMS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.remindMeTSMI,
+            this.settingsTSMI,
+            this.helpTSMI});
+            this.menuMS.Location = new System.Drawing.Point(0, 0);
+            this.menuMS.Name = "menuMS";
+            this.menuMS.Size = new System.Drawing.Size(584, 24);
+            this.menuMS.TabIndex = 12;
             // 
-            // tipTT
+            // remindMeTSMI
             // 
-            this.tipTT.AutomaticDelay = 100;
-            this.tipTT.AutoPopDelay = 4000;
-            this.tipTT.InitialDelay = 300;
-            this.tipTT.ReshowDelay = 20;
+            this.remindMeTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.myRemindersTSMI});
+            this.remindMeTSMI.Name = "remindMeTSMI";
+            this.remindMeTSMI.Size = new System.Drawing.Size(88, 20);
+            this.remindMeTSMI.Text = "Recuerda.me";
+            this.remindMeTSMI.DropDownOpening += new System.EventHandler(this.remindMeTSMI_DropDownOpening);
             // 
-            // reminderNI
+            // myRemindersTSMI
             // 
-            this.reminderNI.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.reminderNI.BalloonTipText = "Si no te acuerdas de lo que deberías recordar,\r\n¡deberías haberlo puesto en el te" +
-    "xto del recordatorio!";
-            this.reminderNI.BalloonTipTitle = "¡Ahora mismo deberías acordarte de algo!";
-            this.reminderNI.Icon = ((System.Drawing.Icon)(resources.GetObject("reminderNI.Icon")));
-            this.reminderNI.Text = "Recuerda.me";
-            this.reminderNI.Click += new System.EventHandler(this.reminderNI_Click);
+            this.myRemindersTSMI.Name = "myRemindersTSMI";
+            this.myRemindersTSMI.Size = new System.Drawing.Size(166, 22);
+            this.myRemindersTSMI.Text = "Mis recordatorios";
+            this.myRemindersTSMI.Click += new System.EventHandler(this.myRemindersTSMI_Click);
             // 
-            // remindmeNI
+            // settingsTSMI
             // 
-            this.remindmeNI.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.remindmeNI.BalloonTipText = "Haga clic en este globo para volver a Remind.me\r\ny detener el recordatorio actual" +
-    ", o modificarlo";
-            this.remindmeNI.BalloonTipTitle = "Remind.me está esperando";
-            this.remindmeNI.Icon = ((System.Drawing.Icon)(resources.GetObject("remindmeNI.Icon")));
-            this.remindmeNI.Text = "Remind.me está esperando ";
-            this.remindmeNI.BalloonTipClicked += new System.EventHandler(this.remindmeNI_BalloonTipClicked);
-            this.remindmeNI.Click += new System.EventHandler(this.remindmeNI_Click);
+            this.settingsTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.startWithWinTSMI,
+            this.minimizeToTrayTSMI});
+            this.settingsTSMI.Name = "settingsTSMI";
+            this.settingsTSMI.Size = new System.Drawing.Size(57, 20);
+            this.settingsTSMI.Text = "Ajustes";
             // 
-            // checkUpdatesB
+            // startWithWinTSMI
             // 
-            this.checkUpdatesB.Location = new System.Drawing.Point(102, 63);
-            this.checkUpdatesB.Name = "checkUpdatesB";
-            this.checkUpdatesB.Size = new System.Drawing.Size(143, 23);
-            this.checkUpdatesB.TabIndex = 11;
-            this.checkUpdatesB.Text = "Comprobar actualizaciones";
-            this.checkUpdatesB.UseVisualStyleBackColor = true;
-            this.checkUpdatesB.Click += new System.EventHandler(this.checkUpdatesB_Click);
+            this.startWithWinTSMI.Checked = true;
+            this.startWithWinTSMI.CheckOnClick = true;
+            this.startWithWinTSMI.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.startWithWinTSMI.Name = "startWithWinTSMI";
+            this.startWithWinTSMI.Size = new System.Drawing.Size(252, 22);
+            this.startWithWinTSMI.Text = "Iniciar con Windows";
+            this.startWithWinTSMI.CheckedChanged += new System.EventHandler(this.startWithWinTSMI_CheckedChanged);
+            this.startWithWinTSMI.Click += new System.EventHandler(this.startWithWinTSMI_Click);
+            // 
+            // minimizeToTrayTSMI
+            // 
+            this.minimizeToTrayTSMI.Checked = global::Recuerda.me.Properties.Settings.Default.minimizeToTray;
+            this.minimizeToTrayTSMI.CheckOnClick = true;
+            this.minimizeToTrayTSMI.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.minimizeToTrayTSMI.Name = "minimizeToTrayTSMI";
+            this.minimizeToTrayTSMI.Size = new System.Drawing.Size(252, 22);
+            this.minimizeToTrayTSMI.Text = "Minimizar a la bandeja de entrada";
+            this.minimizeToTrayTSMI.Click += new System.EventHandler(this.minimizeToTrayTSMI_Click);
+            // 
+            // helpTSMI
+            // 
+            this.helpTSMI.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.checkUpdatesTSMI,
+            this.supportTSMI});
+            this.helpTSMI.Name = "helpTSMI";
+            this.helpTSMI.Size = new System.Drawing.Size(53, 20);
+            this.helpTSMI.Text = "Ayuda";
+            // 
+            // checkUpdatesTSMI
+            // 
+            this.checkUpdatesTSMI.Name = "checkUpdatesTSMI";
+            this.checkUpdatesTSMI.Size = new System.Drawing.Size(218, 22);
+            this.checkUpdatesTSMI.Text = "Comprobar actualizaciones";
+            this.checkUpdatesTSMI.Click += new System.EventHandler(this.checkUpdatesTSMI_Click);
+            // 
+            // supportTSMI
+            // 
+            this.supportTSMI.Name = "supportTSMI";
+            this.supportTSMI.Size = new System.Drawing.Size(218, 22);
+            this.supportTSMI.Text = "Soporte";
+            this.supportTSMI.Click += new System.EventHandler(this.supportTSMI_Click);
+            // 
+            // remindMeAtDTP
+            // 
+            this.remindMeAtDTP.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.remindMeAtDTP.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.remindMeAtDTP.Location = new System.Drawing.Point(489, 34);
+            this.remindMeAtDTP.Name = "remindMeAtDTP";
+            this.remindMeAtDTP.Size = new System.Drawing.Size(83, 20);
+            this.remindMeAtDTP.TabIndex = 13;
+            this.remindMeAtDTP.ValueChanged += new System.EventHandler(this.ResetInfo);
+            // 
+            // remindMeAtL
+            // 
+            this.remindMeAtL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.remindMeAtL.AutoSize = true;
+            this.remindMeAtL.Location = new System.Drawing.Point(390, 37);
+            this.remindMeAtL.Name = "remindMeAtL";
+            this.remindMeAtL.Size = new System.Drawing.Size(93, 13);
+            this.remindMeAtL.TabIndex = 14;
+            this.remindMeAtL.Text = "Recuérdame a las";
+            // 
+            // reminderContentL
+            // 
+            this.reminderContentL.AutoSize = true;
+            this.reminderContentL.Location = new System.Drawing.Point(12, 63);
+            this.reminderContentL.Name = "reminderContentL";
+            this.reminderContentL.Size = new System.Drawing.Size(72, 26);
+            this.reminderContentL.TabIndex = 15;
+            this.reminderContentL.Text = "Contenido del\r\nrecordatorio:";
+            // 
+            // trayNI
+            // 
+            this.trayNI.BalloonTipText = "¡Recuerda.me te notificará en el momento!\r\nNo tienes que preocuparte más por reco" +
+    "rdar algo.\r\n\r\n¡No cierres Recuerda.me o no serás notificado!";
+            this.trayNI.BalloonTipTitle = "Recuerda.me está funcionando";
+            this.trayNI.ContextMenuStrip = this.trayCMS;
+            this.trayNI.Text = "Recuerda.me";
+            this.trayNI.BalloonTipClicked += new System.EventHandler(this.trayNI_BalloonTipClicked);
+            this.trayNI.MouseClick += new System.Windows.Forms.MouseEventHandler(this.trayNI_MouseClick);
+            // 
+            // trayCMS
+            // 
+            this.trayCMS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openRemindMeTSMI,
+            this.viewMyRemindersTSMI,
+            this.tss1,
+            this.exitTSMI});
+            this.trayCMS.Name = "trayCMS";
+            this.trayCMS.Size = new System.Drawing.Size(187, 76);
+            this.trayCMS.Opening += new System.ComponentModel.CancelEventHandler(this.trayCMS_Opening);
+            // 
+            // openRemindMeTSMI
+            // 
+            this.openRemindMeTSMI.Name = "openRemindMeTSMI";
+            this.openRemindMeTSMI.Size = new System.Drawing.Size(186, 22);
+            this.openRemindMeTSMI.Text = "Abrir Recuerda.me";
+            this.openRemindMeTSMI.Click += new System.EventHandler(this.openRemindMeTSMI_Click);
+            // 
+            // viewMyRemindersTSMI
+            // 
+            this.viewMyRemindersTSMI.Name = "viewMyRemindersTSMI";
+            this.viewMyRemindersTSMI.Size = new System.Drawing.Size(186, 22);
+            this.viewMyRemindersTSMI.Text = "Ver mis recordatorios";
+            this.viewMyRemindersTSMI.Click += new System.EventHandler(this.myRemindersTSMI_Click);
+            // 
+            // tss1
+            // 
+            this.tss1.Name = "tss1";
+            this.tss1.Size = new System.Drawing.Size(183, 6);
+            // 
+            // exitTSMI
+            // 
+            this.exitTSMI.Name = "exitTSMI";
+            this.exitTSMI.Size = new System.Drawing.Size(186, 22);
+            this.exitTSMI.Text = "Salir";
+            this.exitTSMI.Click += new System.EventHandler(this.exitTSMI_Click);
+            // 
+            // statusSS
+            // 
+            this.statusSS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.infoTSSL});
+            this.statusSS.Location = new System.Drawing.Point(0, 139);
+            this.statusSS.Name = "statusSS";
+            this.statusSS.Size = new System.Drawing.Size(584, 22);
+            this.statusSS.TabIndex = 17;
+            // 
+            // infoTSSL
+            // 
+            this.infoTSSL.ForeColor = System.Drawing.Color.Purple;
+            this.infoTSSL.Name = "infoTSSL";
+            this.infoTSSL.Size = new System.Drawing.Size(0, 17);
             // 
             // MainF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(254, 231);
-            this.Controls.Add(this.checkUpdatesB);
-            this.Controls.Add(this.lonamiwebsLL);
+            this.ClientSize = new System.Drawing.Size(584, 161);
+            this.Controls.Add(this.statusSS);
+            this.Controls.Add(this.reminderContentL);
+            this.Controls.Add(this.remindMeAtL);
+            this.Controls.Add(this.remindMeAtDTP);
             this.Controls.Add(this.remindB);
-            this.Controls.Add(this.remindTimeTB);
-            this.Controls.Add(this.remindTimeRB);
-            this.Controls.Add(this.remindTimingRB);
             this.Controls.Add(this.reminderL);
-            this.Controls.Add(this.reminderTextTB);
+            this.Controls.Add(this.reminderContentTB);
             this.Controls.Add(this.reminderTitleTB);
-            this.Controls.Add(this.remindTimingCB);
-            this.Controls.Add(this.remindTimingTB);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(270, 270);
+            this.Controls.Add(this.menuMS);
+            this.MainMenuStrip = this.menuMS;
+            this.MinimumSize = new System.Drawing.Size(400, 200);
             this.Name = "MainF";
-            this.Text = "Recuerda.me";
+            this.Text = "Recuerda.me 2.0";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainF_FormClosing);
             this.Load += new System.EventHandler(this.MainF_Load);
+            this.Resize += new System.EventHandler(this.MainF_Resize);
+            this.menuMS.ResumeLayout(false);
+            this.menuMS.PerformLayout();
+            this.trayCMS.ResumeLayout(false);
+            this.statusSS.ResumeLayout(false);
+            this.statusSS.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -242,21 +307,30 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox remindTimingTB;
-        private System.Windows.Forms.ComboBox remindTimingCB;
         private System.Windows.Forms.TextBox reminderTitleTB;
-        private System.Windows.Forms.TextBox reminderTextTB;
+        private System.Windows.Forms.TextBox reminderContentTB;
         private System.Windows.Forms.Label reminderL;
-        private System.Windows.Forms.RadioButton remindTimingRB;
-        private System.Windows.Forms.RadioButton remindTimeRB;
-        private System.Windows.Forms.TextBox remindTimeTB;
-        private System.Windows.Forms.Timer reminderT;
         private System.Windows.Forms.Button remindB;
-        private System.Windows.Forms.LinkLabel lonamiwebsLL;
-        private System.Windows.Forms.ToolTip tipTT;
-        private System.Windows.Forms.NotifyIcon reminderNI;
-        private System.Windows.Forms.NotifyIcon remindmeNI;
-        private System.Windows.Forms.Button checkUpdatesB;
+        private System.Windows.Forms.MenuStrip menuMS;
+        private System.Windows.Forms.ToolStripMenuItem remindMeTSMI;
+        private System.Windows.Forms.ToolStripMenuItem myRemindersTSMI;
+        private System.Windows.Forms.ToolStripMenuItem settingsTSMI;
+        private System.Windows.Forms.ToolStripMenuItem startWithWinTSMI;
+        private System.Windows.Forms.ToolStripMenuItem helpTSMI;
+        private System.Windows.Forms.ToolStripMenuItem checkUpdatesTSMI;
+        private System.Windows.Forms.ToolStripMenuItem supportTSMI;
+        private System.Windows.Forms.DateTimePicker remindMeAtDTP;
+        private System.Windows.Forms.Label remindMeAtL;
+        private System.Windows.Forms.Label reminderContentL;
+        private System.Windows.Forms.ToolStripMenuItem minimizeToTrayTSMI;
+        private System.Windows.Forms.NotifyIcon trayNI;
+        private System.Windows.Forms.ContextMenuStrip trayCMS;
+        private System.Windows.Forms.ToolStripMenuItem openRemindMeTSMI;
+        private System.Windows.Forms.ToolStripMenuItem viewMyRemindersTSMI;
+        private System.Windows.Forms.ToolStripMenuItem exitTSMI;
+        private System.Windows.Forms.ToolStripSeparator tss1;
+        private System.Windows.Forms.StatusStrip statusSS;
+        private System.Windows.Forms.ToolStripStatusLabel infoTSSL;
     }
 }
 

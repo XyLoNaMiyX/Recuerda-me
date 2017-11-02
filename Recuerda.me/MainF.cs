@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using Microsoft.Win32;
+using System;
 using System.Diagnostics;
-using System.Globalization;
-using System.Media;
-using Utils;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Recuerda.me
 {
@@ -18,218 +11,177 @@ namespace Recuerda.me
 
         #region Setup
 
-        public MainF()
-        {
+        public MainF(bool minimized) {
             InitializeComponent();
+            trayNI.Icon = Icon = Properties.Resources.icon;
+            if (minimized)
+                ChangeDisplay(false);
         }
 
-        private void MainF_Load(object sender, EventArgs e)
-        {
-            remindTimingCB.SelectedIndex = 1;
-        }
+        void MainF_Load(object sender, EventArgs e) {
+            CheckStartWidthWindows();
+            remindMeAtDTP.MinDate = DateTime.Now;
+            remindMeAtDTP.Value = DateTime.Now.AddMinutes(5);
 
-        private void lonamiwebsLL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("http://lonamiwebs.github.io");
+            int c = Latency.reminders.Count;
+            string reminders = c == 1 ? "recordatorio" : "recordatorios";
+            infoTSSL.Text = "Recuerda.me ha cargado " + c + " " + reminders + " correctamente.";
         }
 
         #endregion
 
-        #region Check Checked
+        #region Start with Windows
 
-        private void remindTimingRB_CheckedChanged(object sender, EventArgs e)
-        {
-            CheckChecked();
+        void CheckStartWidthWindows() {
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey
+                (@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+
+            if (startWithWinTSMI.Checked)
+                rk.SetValue("Recuerda.me", Application.ExecutablePath.ToString() + " -m");
+            else
+                rk.DeleteValue("Recuerda.me", false);
         }
 
-        void CheckChecked() {
-            if (remindTimeRB.Checked) {
-                remindTimingTB.Enabled = false;
-                remindTimingCB.Enabled = false;
-                remindTimeTB.Enabled = true;
-            } else {
-                remindTimingTB.Enabled = true;
-                remindTimingCB.Enabled = true;
-                remindTimeTB.Enabled = false;
+        #endregion
+
+        #region Add Reminder
+
+        void remindB_Click(object sender, EventArgs e) {
+            AddReminder();
+            reminderTitleTB.Text = reminderContentTB.Text = "";
+            infoTSSL.Text = "¡Se ha añadido un nuevo recordatorio correctamente!";
+        }
+
+        void AddReminder() {
+            Directory.CreateDirectory(C.RemindersFolder);
+            if (!File.Exists(C.RemindersPath))
+                File.Create(C.RemindersPath);
+
+            C.Reminder r = new C.Reminder(reminderTitleTB.Text, reminderContentTB.Text, remindMeAtDTP.Value);
+            Latency.reminders.Add(r);
+            C.SaveRemindersFile();
+
+
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form.Name == "MyRemindersF")
+                    ((MyRemindersF)form).RefreshReminders();
             }
         }
 
-        #endregion
-
-        #region Check valid
-
-        bool IsPositiveNum(string text)
-        {
-            if (IsNum(text))
-                return Double.Parse(text) > 0;
-            return false;
-        }
-
-        bool IsNum(string text)
-        {
-            double num;
-            return Double.TryParse(text, out num);
-        }
-
-        bool CheckValid()
-        {
-            if (remindTimingRB.Checked)
-                return IsPositiveNum(remindTimingTB.Text);
-            else
-                return HourRetriever.ContainsHourAndSeconds(remindTimeTB.Text)
-                    || HourRetriever.ContainsHourNoSeconds(remindTimeTB.Text);
-        }
-
-        private void remindTimingTB_TextChanged(object sender, EventArgs e)
-        {
-            remindTimingTB.BackColor = Color.White;
-        }
-
-        private void remindTimeTB_TextChanged(object sender, EventArgs e)
-        {
-            remindTimeTB.BackColor = Color.White;
-        }
-
-        #endregion
-
-        #region Start Reminder
-
-        private void remindB_Click(object sender, EventArgs e)
-        {
-            if (CheckValid())
+        void reminderTitleTB_KeyDown(object sender, KeyEventArgs e) {
+            if (e.KeyCode == Keys.Enter)
             {
-                if (reminderTitleTB.Text != "")
-                    reminderNI.BalloonTipTitle = reminderTitleTB.Text;
-                if (reminderTextTB.Text != "")
-                    reminderNI.BalloonTipText = reminderTextTB.Text;
-
-                HideForm();
-                StartReminder();
+                e.SuppressKeyPress = true;
+                reminderContentTB.Focus();
             }
-            else
-            {
-                if (remindTimingRB.Checked)
-                    remindTimingTB.BackColor = Color.Salmon;
+        }
+        void ResetInfo(object sender, EventArgs e) {
+            infoTSSL.Text = "Recuerda.me v2.0 | Creado por Lonami - http://lonamiwebs.github.io";
+        }
+
+        #endregion
+
+        #region Tool Strip Menu Items
+
+        void remindMeTSMI_DropDownOpening(object sender, EventArgs e) {
+            myRemindersTSMI.Enabled = !IsMyRemindersOpen();
+        }
+
+        bool IsMyRemindersOpen() {
+            bool found = false;
+            foreach (Form form in Application.OpenForms)
+                if (!found)
+                    found = form.Name == "MyRemindersF";
+            return found;
+        }
+
+        void myRemindersTSMI_Click(object sender, EventArgs e) {
+            new MyRemindersF().Show();
+        }
+
+        void startWithWinTSMI_CheckedChanged(object sender, EventArgs e) {
+            CheckStartWidthWindows();
+        }
+        private void startWithWinTSMI_Click(object sender, EventArgs e) {
+            if (!startWithWinTSMI.Checked)
+                if (MessageBox.Show("¿Está seguro de que quiere deshabilitar el programa al inicio de Windows?\r\n" +
+                    "¡Si tiene recordatorios puestos para días posteriores y el programa no está abierto no " + 
+                    "se le recordará!", "Aviso", MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2) == DialogResult.No)
+                    startWithWinTSMI.Checked = true;
+        }
+
+        private void minimizeToTrayTSMI_Click(object sender, EventArgs e) {
+            if (MessageBox.Show("Se recomienda dejar esta opción activada ya que, si se cierra el programa, " +
+                "no se le podrá recordar en el momento.\r\n¿Está seguro de desactivarla?", "Aviso",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button2) == DialogResult.No)
+                minimizeToTrayTSMI.Checked = true;
+        }
+
+        void supportTSMI_Click(object sender, EventArgs e) {
+            Process.Start("http://lonamiwebs.github.io/contacto?t=software&q=rem2");
+        }
+
+        #endregion
+
+        void checkUpdatesTSMI_Click(object sender, EventArgs e) {
+            new UpdateChecker.UpdateChecker(System.Reflection.Assembly.GetExecutingAssembly().Location, "rem2").Show();
+        }
+
+        #region System Tray
+
+        void MainF_Resize(object sender, EventArgs e)
+        {
+            if (minimizeToTrayTSMI.Checked)
+                if (WindowState == FormWindowState.Minimized)
+                    ChangeDisplay(false);
+        }
+
+        void ChangeDisplay(bool visible) {
+            WindowState = visible ? FormWindowState.Normal : FormWindowState.Minimized;
+            ShowInTaskbar = visible;
+            trayNI.Visible = !visible;
+        }
+
+        void trayNI_MouseClick(object sender, MouseEventArgs e) {
+            if (e.Button == MouseButtons.Left)
+                trayNI.ShowBalloonTip(2000);
+        }
+
+        void trayNI_BalloonTipClicked(object sender, EventArgs e) {
+            ChangeDisplay(true);
+        }
+
+        void openRemindMeTSMI_Click(object sender, EventArgs e) {
+            ChangeDisplay(true);
+        }
+
+        void trayCMS_Opening(object sender, System.ComponentModel.CancelEventArgs e) {
+            viewMyRemindersTSMI.Enabled = !IsMyRemindersOpen();
+        }
+
+        void exitTSMI_Click(object sender, EventArgs e) {
+            Application.Exit();
+        }
+
+        #endregion
+
+        #region Closing
+
+        private void MainF_FormClosing(object sender, FormClosingEventArgs e) {
+            e.Cancel = true;
+            if (minimizeToTrayTSMI.Checked)
+                if (trayNI.Visible)
+                    Application.Exit();
                 else
-                    remindTimeTB.BackColor = Color.Salmon;
-            }
-        }
-
-        #endregion
-
-        #region Hide and show form
-
-        void HideForm() {
-            this.WindowState = FormWindowState.Minimized;
-            this.ShowInTaskbar = false;
-            remindmeNI.Visible = true;
-        }
-
-        void ShowForm() {
-            this.WindowState = FormWindowState.Normal;
-            this.ShowInTaskbar = true;
-            remindmeNI.Visible = false;
-        }
-
-        private void remindmeNI_Click(object sender, EventArgs e)
-        {
-            remindmeNI.ShowBalloonTip(10000);
-        }
-
-        private void remindmeNI_BalloonTipClicked(object sender, EventArgs e)
-        {
-            StopReminder();
-            ShowForm();
-        }
-
-        #endregion
-
-        #region Reminder
-
-        void StartReminder() {
-            if (remindTimingRB.Checked)
-            {
-                countdown = Double.Parse(remindTimingTB.Text, CultureInfo.InvariantCulture)
-                    * Math.Pow(60, remindTimingCB.SelectedIndex);
-            }
+                    ChangeDisplay(false);
             else
-            {
-                dt = HourRetriever.RetrieveHourFromString(remindTimeTB.Text);
-                remindmeNI.Text = "Remind.me está esperando hasta las " + dt.ToString("HH:mm:ss");
-            }
-
-            reminderT.Enabled = true;
-        }
-
-        void StopReminder()
-        {
-            if (countdown > -1)
-            {
-                remindTimingTB.Text = countdown.ToString();
-                remindTimingCB.SelectedIndex = 0;
-            }
-
-            reminderT.Enabled = false;
-        }
-
-        DateTime dt = new DateTime(1, 1, 1);
-        double seconds = 0;
-        double countdown = -1;
-
-        private void reminderT_Tick(object sender, EventArgs e)
-        {
-            seconds += 0.5;
-            CheckReminder();
-        }
-
-        void CheckReminder() {
-            if (countdown > -1)
-            {
-                countdown -= 0.5;
-
-                TimeSpan ts = TimeSpan.FromSeconds(countdown);
-                if (ts.Hours > 0)
-                    remindmeNI.Text = "Remind.me: esperando " + ts.Hours + " hora(s), " +
-                        ts.Minutes + " minuto(s) y " + ts.Seconds + " segundo(s)";
-                else if (ts.Minutes > 0)
-                    remindmeNI.Text = "Remind.me está esperando " + ts.Minutes +
-                        " minuto(s) y " + ts.Seconds + " segundo(s)";
-                else
-                    remindmeNI.Text = "Remind.me está esperando " + ts.Seconds + " segundo(s)";
-
-                if (countdown <= 0)
-                    Notify();
-            }
-            else
-            {
-                DateTime n = DateTime.Now;
-                if (dt.Hour == n.Hour && dt.Minute == n.Minute && dt.Second == n.Second)
-                    Notify();
-            }
-        }
-
-        void Notify() {
-            reminderNI.Visible = true;
-            remindmeNI.Visible = false;
-            reminderT.Enabled = false;
-            reminderNI.ShowBalloonTip(10000);
-
-            var player = new SoundPlayer();
-            player.Stream = Properties.Resources.notification;
-            player.Play();
-        }
-
-        private void reminderNI_Click(object sender, EventArgs e)
-        {
-            reminderNI.Visible = false;
-            new NotifyF(reminderNI.BalloonTipText, reminderNI.BalloonTipTitle).Show();
+                Application.Exit();
         }
 
         #endregion
 
-        private void checkUpdatesB_Click(object sender, EventArgs e)
-        {
-            new UpdateChecker.UpdateChecker(System.Reflection.Assembly.GetExecutingAssembly().Location, "rem").Show();
-        }
     }
 }
